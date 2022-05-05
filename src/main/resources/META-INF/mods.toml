@@ -1,0 +1,19 @@
+modLoader="javafml"
+loaderVersion="[39,)"
+issueTrackerURL="https://github.com/Brass-Goggled-Coders/NetherChest/issues"
+license="MIT"
+
+[[mods]]
+    modId="transport"
+    version="${file.jarVersion}"
+    displayName="Transport"
+    authors="SkySom"
+    description='''
+    '''
+
+[[dependencies.transport]]
+    modId="forge"
+    mandatory=true
+    versionRange="[39.1.0,)"
+    ordering="NONE"
+    side="BOTH"
