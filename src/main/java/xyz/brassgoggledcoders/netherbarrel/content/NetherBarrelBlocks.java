@@ -2,25 +2,49 @@ package xyz.brassgoggledcoders.netherbarrel.content;
 
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.registries.ForgeRegistries;
-import xyz.brassgoggledcoders.netherbarrel.NetherBarrel;
+import xyz.brassgoggledcoders.netherbarrel.NetherBarrels;
 import xyz.brassgoggledcoders.netherbarrel.block.NetherBarrelBlock;
 import xyz.brassgoggledcoders.netherbarrel.blockentity.NetherBarrelBlockEntity;
 
 public class NetherBarrelBlocks {
 
-    public static final BlockEntry<NetherBarrelBlock> NETHER_BARREL = NetherBarrel.getRegistrate()
+    public static final BlockEntry<NetherBarrelBlock> NETHER_BARREL = NetherBarrels.getRegistrate()
             .object("nether_barrel")
             .block(NetherBarrelBlock::new)
             .initialProperties(Material.STONE, MaterialColor.NETHER)
-            .properties(properties -> properties.strength(2.0F, 6.0F)
+            .properties(properties -> properties.strength(2.0F, 1200.0F)
                     .sound(SoundType.NETHER_BRICKS)
             )
+            .blockstate((context, provider) -> {
+                ModelFile openBarrel = provider.models().cubeBottomTop(
+                        "block/nether_barrel_open",
+                        provider.modLoc("block/nether_barrel_side"),
+                        provider.modLoc("block/nether_barrel_back"),
+                        provider.modLoc("block/nether_barrel_front_open")
+                );
+                ModelFile closedBarrel = provider.models().cubeBottomTop(
+                        "block/nether_barrel",
+                        provider.modLoc("block/nether_barrel_side"),
+                        provider.modLoc("block/nether_barrel_back"),
+                        provider.modLoc("block/nether_barrel_front_closed")
+                );
+                provider.directionalBlock(context.get(), blockState -> {
+                    if (blockState.getValue(NetherBarrelBlock.OPEN)) {
+                        return openBarrel;
+                    } else {
+                        return closedBarrel;
+                    }
+                });
+            })
             .item()
+            .properties(properties -> properties.tab(CreativeModeTab.TAB_DECORATIONS))
             .build()
             .blockEntity(NetherBarrelBlockEntity::new)
             .build()

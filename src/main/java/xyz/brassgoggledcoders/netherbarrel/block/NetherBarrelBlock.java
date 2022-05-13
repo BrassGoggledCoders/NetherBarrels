@@ -3,8 +3,6 @@ package xyz.brassgoggledcoders.netherbarrel.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,7 +24,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import xyz.brassgoggledcoders.netherbarrel.blockentity.NetherBarrelBlockEntity;
 import xyz.brassgoggledcoders.netherbarrel.content.NetherBarrelBlocks;
@@ -41,6 +38,9 @@ public class NetherBarrelBlock extends Block implements EntityBlock {
 
     public NetherBarrelBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.defaultBlockState()
+                .setValue(OPEN, false)
+        );
     }
 
     @Override
@@ -68,8 +68,8 @@ public class NetherBarrelBlock extends Block implements EntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (!pState.is(pNewState.getBlock())) {
             pLevel.getBlockEntity(pPos, NetherBarrelBlocks.NETHER_BARREL_ENTITY.get())
-                    .map(NetherBarrelBlockEntity::getItemHandler)
-                            .ifPresent();
+                    .map(NetherBarrelBlockEntity::getItemHandler);
+            //.ifPresent();
 
             super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
         }

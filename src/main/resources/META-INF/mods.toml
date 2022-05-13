@@ -1,17 +1,17 @@
 modLoader="javafml"
 loaderVersion="[39,)"
-issueTrackerURL="https://github.com/Brass-Goggled-Coders/NetherChest/issues"
+issueTrackerURL="https://github.com/Brass-Goggled-Coders/NetherBarrels/issues"
 license="MIT"
 
 [[mods]]
-    modId="transport"
+    modId="nether_barrels"
     version="${file.jarVersion}"
     displayName="Transport"
     authors="SkySom"
     description='''
     '''
 
-[[dependencies.transport]]
+[[dependencies.nether_barrels]]
     modId="forge"
     mandatory=true
     versionRange="[39.1.0,)"

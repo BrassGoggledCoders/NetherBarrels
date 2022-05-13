@@ -116,6 +116,7 @@ configurations {
 shadowJar {
     configurations = [project.configurations.shade]
     relocate 'com.tterrag.registrate', "xyz.brassgoggledcoders.${modId}.repack.registrate"
+    classifier
 }
 
 repositories {
