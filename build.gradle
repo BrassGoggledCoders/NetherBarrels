@@ -17,7 +17,7 @@ buildscript {
 plugins {
     id 'eclipse'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
@@ -116,7 +116,7 @@ configurations {
 shadowJar {
     configurations = [project.configurations.shade]
     relocate 'com.tterrag.registrate', "xyz.brassgoggledcoders.${modId}.repack.registrate"
-    classifier
+    classifier ''
 }
 
 repositories {
@@ -159,6 +159,7 @@ dependencies {
 }
 
 jar {
+    classifier "nodep"
     manifest {
         attributes([
                 "Specification-Title"     : "${modId}",
@@ -172,7 +173,19 @@ jar {
     }
 }
 
+reobf {
+    shadowJar {}
+}
+
 jar.finalizedBy('reobfJar')
+
+build.dependsOn shadowJar
+build.dependsOn reobfShadowJar
+
+artifacts {
+    archives shadowJar
+    archives jar
+}
 
 publishing {
     publications {

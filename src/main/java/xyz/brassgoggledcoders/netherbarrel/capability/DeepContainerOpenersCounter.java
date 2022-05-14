@@ -11,11 +11,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
+import xyz.brassgoggledcoders.netherbarrel.menu.NetherBarrelMenu;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 public class DeepContainerOpenersCounter extends ContainerOpenersCounter {
+
+    private final IItemHandler itemHandler;
+
+    public DeepContainerOpenersCounter(IItemHandler itemHandler) {
+        this.itemHandler = itemHandler;
+    }
 
     @Override
     @ParametersAreNonnullByDefault
@@ -43,6 +51,10 @@ public class DeepContainerOpenersCounter extends ContainerOpenersCounter {
 
     @Override
     protected boolean isOwnContainer(@NotNull Player player) {
+        if (player.containerMenu instanceof NetherBarrelMenu menu) {
+            return menu.getItemHandler() == this.itemHandler;
+        }
+
         return false;
     }
 
