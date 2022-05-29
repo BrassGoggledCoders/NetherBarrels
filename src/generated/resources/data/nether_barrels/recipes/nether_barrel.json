@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NON",
+    "GBG",
+    "NON"
+  ],
+  "key": {
+    "N": {
+      "tag": "forge:ingots/nether_brick"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    },
+    "B": {
+      "tag": "forge:barrels/wooden"
+    },
+    "O": {
+      "tag": "forge:obsidian"
+    }
+  },
+  "result": {
+    "item": "nether_barrels:nether_barrel"
+  }
+}

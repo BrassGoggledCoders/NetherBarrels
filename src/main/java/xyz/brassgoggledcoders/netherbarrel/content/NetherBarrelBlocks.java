@@ -1,13 +1,16 @@
 package xyz.brassgoggledcoders.netherbarrel.content;
 
+import com.tterrag.registrate.providers.RegistrateRecipeProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 import xyz.brassgoggledcoders.netherbarrel.NetherBarrels;
 import xyz.brassgoggledcoders.netherbarrel.block.NetherBarrelBlock;
@@ -45,6 +48,17 @@ public class NetherBarrelBlocks {
             })
             .item()
             .properties(properties -> properties.tab(CreativeModeTab.TAB_DECORATIONS))
+            .recipe((context, provider) -> ShapedRecipeBuilder.shaped(context.get())
+                    .pattern("NON")
+                    .pattern("GBG")
+                    .pattern("NON")
+                    .define('N', Tags.Items.INGOTS_NETHER_BRICK)
+                    .define('G', Tags.Items.INGOTS_GOLD)
+                    .define('B', Tags.Items.BARRELS_WOODEN)
+                    .define('O', Tags.Items.OBSIDIAN)
+                    .unlockedBy("has_item", RegistrateRecipeProvider.has(Tags.Items.INGOTS_NETHER_BRICK))
+                    .save(provider)
+            )
             .build()
             .blockEntity(NetherBarrelBlockEntity::new)
             .build()
