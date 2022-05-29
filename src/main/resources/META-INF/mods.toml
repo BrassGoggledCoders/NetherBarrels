@@ -6,7 +6,7 @@ license="MIT"
 [[mods]]
     modId="nether_barrels"
     version="${file.jarVersion}"
-    displayName="Transport"
+    displayName="Nether Barrels"
     authors="SkySom"
     description='''
     '''
