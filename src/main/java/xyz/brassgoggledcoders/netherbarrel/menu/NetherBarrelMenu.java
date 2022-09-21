@@ -1,5 +1,6 @@
 package xyz.brassgoggledcoders.netherbarrel.menu;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -20,6 +21,7 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
 
     private final DeepItemHandler itemHandler;
     private final int containerRows;
+    private final Inventory inventory;
 
     public NetherBarrelMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inventory,
                             Predicate<Player> stillValid, BiConsumer<Player, Boolean> openHandler,
@@ -28,6 +30,7 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
         this.stillValid = stillValid;
         this.openHandler = openHandler;
         this.openHandler.accept(inventory.player, true);
+        this.inventory = inventory;
         this.itemHandler = handler;
         this.containerRows = 3;
         int i = (containerRows - 4) * 18;
@@ -138,6 +141,15 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
         }
 
         return flag;
+    }
+
+    @Override
+    public void setSynchronizer(@NotNull ContainerSynchronizer containerSynchronizer) {
+        if (inventory.player instanceof ServerPlayer serverPlayer) {
+            super.setSynchronizer(new NetherBarrelContainerSynchronizer(serverPlayer, containerSynchronizer));
+        } else {
+            super.setSynchronizer(containerSynchronizer);
+        }
     }
 
     @Override
