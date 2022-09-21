@@ -6,8 +6,6 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import xyz.brassgoggledcoders.netherbarrel.capability.DeepItemHandler;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -15,7 +13,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 public class NetherBarrelMenu extends AbstractContainerMenu {
-    private static final Logger LOGGER = LoggerFactory.getLogger(NetherBarrelMenu.class);
     private static final int SLOTS_PER_ROW = 9;
 
     private final Predicate<Player> stillValid;
