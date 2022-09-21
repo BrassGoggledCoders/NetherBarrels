@@ -1,20 +1,21 @@
 package xyz.brassgoggledcoders.netherbarrel.menu;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import xyz.brassgoggledcoders.netherbarrel.capability.DeepItemHandler;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 public class NetherBarrelMenu extends AbstractContainerMenu {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NetherBarrelMenu.class);
     private static final int SLOTS_PER_ROW = 9;
 
     private final Predicate<Player> stillValid;
@@ -183,8 +184,48 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
     public int getRowCount() {
         return containerRows;
     }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public void clicked(int slotNumber, int button, ClickType clickType, Player player) {
+        boolean didSomething = false;
+
+        if (slotNumber >= 0 && slotNumber < this.itemHandler.getSlots()) {
+            ClickAction clickAction = null;
+            if (button == 0) {
+                clickAction = ClickAction.PRIMARY;
+            } else if (button == 1) {
+                clickAction = ClickAction.SECONDARY;
+            }
+
+            LOGGER.debug("ClickAction {}, ClickType {}", clickAction, clickType);
+            Slot slot = this.slots.get(slotNumber);
+            if (clickType == ClickType.PICKUP && clickAction == ClickAction.SECONDARY) {
+                if (this.getCarried().isEmpty()) {
+                    ItemStack slotStack = slot.getItem();
+                    int count = slotStack.getCount();
+                    if (count > slotStack.getMaxStackSize()) {
+                        count = slotStack.getMaxStackSize();
+                    }
+                    int toPull = (count + 1) / 2;
+                    didSomething = slot.tryRemove(toPull, Integer.MAX_VALUE, player)
+                            .map((item) -> {
+                                this.setCarried(item);
+                                slot.onTake(player, item);
+                                return true;
+                            })
+                            .orElse(false);
+                }
+            }
+        }
+
+        if (!didSomething) {
+            super.clicked(slotNumber, button, clickType, player);
+        }
+    }
+
     @NotNull
-    public static  NetherBarrelMenu create(MenuType<NetherBarrelMenu> menuType, int containerId, Inventory inventory) {
+    public static NetherBarrelMenu create(MenuType<NetherBarrelMenu> menuType, int containerId, Inventory inventory) {
         return new NetherBarrelMenu(
                 menuType,
                 containerId,
