@@ -150,11 +150,19 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(@NotNull Player pPlayer, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(pIndex);
+        int amountMoved = 0;
         if (slot.hasItem()) {
             ItemStack slotItemStack = slot.getItem();
             itemstack = slotItemStack.copy();
             if (pIndex < this.containerRows * SLOTS_PER_ROW) {
-                if (!this.moveItemStackTo(slotItemStack, this.containerRows * SLOTS_PER_ROW, this.slots.size(), true)) {
+                ItemStack testStack = slotItemStack.copy();
+                testStack.setCount(slotItemStack.getMaxStackSize());
+                boolean flag = !this.moveItemStackTo(testStack, this.containerRows * SLOTS_PER_ROW, this.slots.size(), true);
+                if (testStack.getCount() != slotItemStack.getMaxStackSize()) {
+                    slotItemStack.shrink(slotItemStack.getMaxStackSize() - testStack.getCount());
+                    amountMoved = slotItemStack.getMaxStackSize() - testStack.getCount();
+                }
+                if (flag) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.moveItemStackTo(slotItemStack, 0, this.containerRows * SLOTS_PER_ROW, false)) {
@@ -168,7 +176,11 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
             }
         }
 
-        return itemstack;
+        if (amountMoved > 0) {
+            return ItemStack.EMPTY;
+        } else {
+            return itemstack;
+        }
     }
 
     @Override
@@ -198,7 +210,6 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
                 clickAction = ClickAction.SECONDARY;
             }
 
-            LOGGER.debug("ClickAction {}, ClickType {}", clickAction, clickType);
             Slot slot = this.slots.get(slotNumber);
             if (clickType == ClickType.PICKUP && clickAction == ClickAction.SECONDARY) {
                 if (this.getCarried().isEmpty()) {
