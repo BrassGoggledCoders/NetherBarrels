@@ -65,42 +65,40 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
             i = pEndIndex - 1;
         }
 
-        if (pStack.isStackable()) {
-            while (!pStack.isEmpty()) {
-                if (pReverseDirection) {
-                    if (i < pStartIndex) {
-                        break;
-                    }
-                } else if (i >= pEndIndex) {
+        while (!pStack.isEmpty()) {
+            if (pReverseDirection) {
+                if (i < pStartIndex) {
                     break;
                 }
+            } else if (i >= pEndIndex) {
+                break;
+            }
 
-                Slot slot = this.slots.get(i);
-                ItemStack itemstack = slot.getItem();
-                if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(pStack, itemstack)) {
-                    int j = itemstack.getCount() + pStack.getCount();
-                    int maxSize = Math.min(slot.getMaxStackSize(), pStack.getMaxStackSize());
-                    if (slot instanceof DeepSlot) {
-                        maxSize = slot.getMaxStackSize(pStack);
-                    }
-                    if (j <= maxSize) {
-                        pStack.setCount(0);
-                        itemstack.setCount(j);
-                        slot.setChanged();
-                        flag = true;
-                    } else if (itemstack.getCount() < maxSize) {
-                        pStack.shrink(maxSize - itemstack.getCount());
-                        itemstack.setCount(maxSize);
-                        slot.setChanged();
-                        flag = true;
-                    }
+            Slot slot = this.slots.get(i);
+            ItemStack itemstack = slot.getItem();
+            if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(pStack, itemstack)) {
+                int j = itemstack.getCount() + pStack.getCount();
+                int maxSize = Math.min(slot.getMaxStackSize(), pStack.getMaxStackSize());
+                if (slot instanceof DeepSlot) {
+                    maxSize = slot.getMaxStackSize(pStack);
                 }
+                if (j <= maxSize) {
+                    pStack.setCount(0);
+                    itemstack.setCount(j);
+                    slot.setChanged();
+                    flag = true;
+                } else if (itemstack.getCount() < maxSize) {
+                    pStack.shrink(maxSize - itemstack.getCount());
+                    itemstack.setCount(maxSize);
+                    slot.setChanged();
+                    flag = true;
+                }
+            }
 
-                if (pReverseDirection) {
-                    --i;
-                } else {
-                    ++i;
-                }
+            if (pReverseDirection) {
+                --i;
+            } else {
+                ++i;
             }
         }
 
