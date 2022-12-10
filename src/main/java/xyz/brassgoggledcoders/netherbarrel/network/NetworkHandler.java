@@ -25,13 +25,13 @@ public class NetworkHandler {
         this.simpleChannel.messageBuilder(NetherBarrelSetContentsPacket.class, 0)
                 .encoder(NetherBarrelSetContentsPacket::write)
                 .decoder(NetherBarrelSetContentsPacket::new)
-                .consumer(NetherBarrelSetContentsPacket::consumer)
+                .consumerMainThread(NetherBarrelSetContentsPacket::consumer)
                 .add();
 
         this.simpleChannel.messageBuilder(NetherBarrelSetSlotPacket.class, 1)
                 .encoder(NetherBarrelSetSlotPacket::write)
                 .decoder(NetherBarrelSetSlotPacket::new)
-                .consumer(NetherBarrelSetSlotPacket::consume)
+                .consumerMainThread(NetherBarrelSetSlotPacket::consume)
                 .add();
     }
 

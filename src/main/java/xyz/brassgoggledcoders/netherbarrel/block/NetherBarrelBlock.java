@@ -3,6 +3,7 @@ package xyz.brassgoggledcoders.netherbarrel.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +31,6 @@ import xyz.brassgoggledcoders.netherbarrel.content.NetherBarrelBlocks;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Random;
 
 public class NetherBarrelBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -81,7 +81,7 @@ public class NetherBarrelBlock extends Block implements EntityBlock {
     @Override
     @SuppressWarnings("deprecation")
     @ParametersAreNonnullByDefault
-    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, Random pRandom) {
+    public void tick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
         BlockEntity blockentity = pLevel.getBlockEntity(pPos);
         if (blockentity instanceof NetherBarrelBlockEntity netherBarrelBlockEntity) {
             netherBarrelBlockEntity.recheckOpen();

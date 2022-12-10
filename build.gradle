@@ -22,7 +22,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = '1.0.3'
+version = '1.1.0'
 group = "xyz.brassgoggledcoders.${modId}"
 archivesBaseName = "${modId}"
 
@@ -39,7 +39,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
+    mappings channel: 'parchment', version: '2022.10.16-1.19.2'
 
     runs {
         client {
@@ -127,33 +127,12 @@ repositories {
             includeGroup "com.tterrag.registrate"
         }
     }
-    maven {
-        name "The One Probe"
-        url "https://cfa2.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        name "Botania"
-        url "https://maven.blamejared.com"
-        content {
-            includeGroupByRegex "vazkii.*"
-        }
-    }
-    maven {
-        name = "JEI"
-        url = "https://dvs1.progwml6.com/files/maven"
-        content {
-            includeGroup "mezz.jei"
-        }
-    }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.0'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.1.65'
 
-    def registrate = "com.tterrag.registrate:Registrate:MC1.18.2-1.0.25"
+    def registrate = "com.tterrag.registrate:Registrate:MC1.19-1.1.5"
     implementation fg.deobf(registrate)
     shade registrate
 }
@@ -197,5 +176,11 @@ publishing {
         maven {
             url "file://${project.projectDir}/mcmodsrepo"
         }
+    }
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xmaxerrs" << "10000"
     }
 }

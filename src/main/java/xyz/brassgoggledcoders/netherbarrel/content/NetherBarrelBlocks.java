@@ -65,7 +65,7 @@ public class NetherBarrelBlocks {
             .register();
 
     public static final RegistryEntry<BlockEntityType<NetherBarrelBlockEntity>> NETHER_BARREL_ENTITY =
-            NETHER_BARREL.getSibling(ForgeRegistries.BLOCK_ENTITIES);
+            NETHER_BARREL.getSibling(ForgeRegistries.BLOCK_ENTITY_TYPES);
 
     public static void setup() {
 
