@@ -163,7 +163,7 @@ public class NetherBarrelMenu extends AbstractContainerMenu {
             itemstack = slotItemStack.copy();
             if (pIndex < this.containerRows * SLOTS_PER_ROW) {
                 ItemStack testStack = slotItemStack.copy();
-                testStack.setCount(slotItemStack.getMaxStackSize());
+                testStack.setCount(Math.min(slotItemStack.getMaxStackSize(), testStack.getCount()));
                 boolean flag = !this.moveItemStackTo(testStack, this.containerRows * SLOTS_PER_ROW, this.slots.size(), true);
                 if (testStack.getCount() != slotItemStack.getMaxStackSize()) {
                     slotItemStack.shrink(slotItemStack.getMaxStackSize() - testStack.getCount());
